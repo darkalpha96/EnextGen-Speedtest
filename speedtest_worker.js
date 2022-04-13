@@ -291,6 +291,7 @@ function clearRequests() {
 // gets client's IP using url_getIp, then calls the done function
 var ipCalled = false; // used to prevent multiple accidental calls to getIp
 var ispInfo = ""; //used for telemetry
+
 function getIp(done) {
 	tverb("getIp");
 	if (ipCalled) return;
@@ -678,6 +679,8 @@ function pingTest(done) {
 	}.bind(this);
 	doPing(); // start first ping
 }
+
+
 // telemetry
 function sendTelemetry(done) {
 	if (settings.telemetry_level < 1) return;
@@ -706,6 +709,8 @@ function sendTelemetry(done) {
 		processedString: clientIp,
 		rawIspInfo: typeof ispInfo === "object" ? ispInfo : ""
 	};
+
+
 	try {
 		var fd = new FormData();
 		fd.append("ispinfo", JSON.stringify(telemetryIspInfo));

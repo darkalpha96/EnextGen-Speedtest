@@ -17,6 +17,8 @@ $ul = $_POST['ul'];
 $ping = $_POST['ping'];
 $jitter = $_POST['jitter'];
 $log = $_POST['log'];
+$latitude = $_POST['latitude'];
+$longitude = $_POST['longitude'];
 
 if (isset($redact_ip_addresses) && true === $redact_ip_addresses) {
     $ip = '0.0.0.0';
@@ -35,7 +37,9 @@ header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0, s-maxage=
 header('Cache-Control: post-check=0, pre-check=0', false);
 header('Pragma: no-cache');
 
-$id = insertSpeedtestUser($ip, $ispinfo, $extra, $ua, $lang, $dl, $ul, $ping, $jitter, $log);
+
+
+$id = insertSpeedtestUser($ip, $ispinfo, $extra, $ua, $lang, $dl, $ul, $ping, $jitter, $log, $longitude, $latitude);
 if (false === $id) {
     exit(1);
 }

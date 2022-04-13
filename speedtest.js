@@ -1,9 +1,3 @@
-/*
-	LibreSpeed - Main
-	by Federico Dossena
-	https://github.com/librespeed/speedtest/
-	GNU LGPLv3 License
-*/
 
 /*
    This is the main interface between your webpage and the speedtest.
@@ -42,15 +36,14 @@
         At the end of the test, it will move to state 4
     - 4: test finished. You can run it again by calling start() if you want.
  */
+    
+
 
 function Speedtest() {
   this._serverList = []; //when using multiple points of test, this is a list of test points
   this._selectedServer = null; //when using multiple points of test, this is the selected server
   this._settings = {}; //settings for the speedtest worker
   this._state = 0; //0=adding settings, 1=adding servers, 2=server selection done, 3=test running, 4=done
-  console.log(
-    "LibreSpeed by Federico Dossena v5.2.5 - https://github.com/librespeed/speedtest"
-  );
 }
 
 Speedtest.prototype = {

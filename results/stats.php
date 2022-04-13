@@ -13,7 +13,7 @@ header('Pragma: no-cache');
 <!DOCTYPE html>
 <html>
     <head>
-        <title>LibreSpeed - Stats</title>
+        <title>EnextGen - Database</title>
         <style type="text/css">
             html,body{
                 margin:0;
@@ -61,7 +61,7 @@ header('Pragma: no-cache');
         </style>
     </head>
     <body>
-        <h1>LibreSpeed - Stats</h1>
+        <h1>EnextGen - Database</h1>
         <?php
         if (!isset($stats_password) || $stats_password === 'PASSWORD') {
             ?>
@@ -147,6 +147,14 @@ header('Pragma: no-cache');
                         <tr>
                             <th>Extra info</th>
                             <td><?= htmlspecialchars($speedtest['extra'], ENT_HTML5, 'UTF-8') ?></td>
+                        </tr>
+                        <tr>
+                            <th>longitude</th>
+                            <td><?= htmlspecialchars($speedtest['longitude'], ENT_HTML5, 'UTF-8') ?></td>
+                        </tr>
+                        <tr>
+                            <th>latitude</th>
+                            <td><?= htmlspecialchars($speedtest['latitude'], ENT_HTML5, 'UTF-8') ?></td>
                         </tr>
                     </table>
                     <?php

@@ -7,6 +7,7 @@ define('TELEMETRY_SETTINGS_FILE', 'telemetry_settings.php');
 /**
  * @return PDO|false
  */
+
 function getPdo()
 {
     if (
@@ -66,7 +67,9 @@ function getPdo()
                 `ul`    text,
                 `ping`  text,
                 `jitter`        text,
-                `log`   longtext
+                `log`   longtext,
+                `longitude`   double, 
+                `latitude`    double
                 );
             ');
 
@@ -111,7 +114,7 @@ function isObfuscationEnabled()
 /**
  * @return string|false returns the id of the inserted column or false on error
  */
-function insertSpeedtestUser($ip, $ispinfo, $extra, $ua, $lang, $dl, $ul, $ping, $jitter, $log)
+function insertSpeedtestUser($ip, $ispinfo, $extra, $ua, $lang, $dl, $ul, $ping, $jitter, $log, $longitude, $latitude)
 {
     $pdo = getPdo();
     if (!($pdo instanceof PDO)) {
@@ -121,11 +124,11 @@ function insertSpeedtestUser($ip, $ispinfo, $extra, $ua, $lang, $dl, $ul, $ping,
     try {
         $stmt = $pdo->prepare(
             'INSERT INTO speedtest_users
-        (ip,ispinfo,extra,ua,lang,dl,ul,ping,jitter,log)
-        VALUES (?,?,?,?,?,?,?,?,?,?)'
+        (ip,ispinfo,extra,ua,lang,dl,ul,ping,jitter,log,longitude,latitude)
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?)'
         );
         $stmt->execute([
-            $ip, $ispinfo, $extra, $ua, $lang, $dl, $ul, $ping, $jitter, $log
+            $ip, $ispinfo, $extra, $ua, $lang, $dl, $ul, $ping, $jitter, $log, $longitude, $latitude
         ]);
         $id = $pdo->lastInsertId();
     } catch (Exception $e) {
@@ -162,7 +165,7 @@ function getSpeedtestUserById($id)
     try {
         $stmt = $pdo->prepare(
             'SELECT
-            id, timestamp, ip, ispinfo, ua, lang, dl, ul, ping, jitter, log, extra
+            id, timestamp, ip, ispinfo, ua, lang, dl, ul, ping, jitter, log, extra, longitude, latitude
             FROM speedtest_users
             WHERE id = :id'
         );
@@ -198,7 +201,7 @@ function getLatestSpeedtestUsers()
     try {
         $stmt = $pdo->query(
             'SELECT
-            id, timestamp, ip, ispinfo, ua, lang, dl, ul, ping, jitter, log, extra
+            id, timestamp, ip, ispinfo, ua, lang, dl, ul, ping, jitter, log, extra, longitude, latitude
             FROM speedtest_users
             ORDER BY timestamp DESC
             LIMIT 100'

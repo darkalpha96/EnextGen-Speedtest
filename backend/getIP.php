@@ -13,6 +13,7 @@ define('SERVER_LOCATION_CACHE_FILE', 'getIP_serverLocation.php');
 
 require_once 'getIP_util.php';
 
+
 /**
  * @param string $ip
  *
@@ -86,7 +87,7 @@ function getIpInfoTokenString()
  */
 function getIspInfo($ip)
 {
-    $json = file_get_contents('https://ipinfo.io/'.$ip.'/json'.getIpInfoTokenString());
+    $json = file_get_contents('https://ipinfo.io'.$ip.'/json'.getIpInfoTokenString());
     if (!is_string($json)) {
         return null;
     }
@@ -155,6 +156,7 @@ function getServerLocation()
     file_put_contents(SERVER_LOCATION_CACHE_FILE, $cacheData);
 
     return $serverLoc;
+    echo $serverLoc;
 }
 
 /**
@@ -215,6 +217,22 @@ function getDistance($rawIspInfo)
     );
 }
 
+function getlat(){
+    $clientLocation = $rawIspInfo['loc'];
+    list($latitude, $longitude) = explode(',', $clientLocation);
+   return $latitude;
+    
+
+}
+
+function getlon(){
+    $clientLocation = $rawIspInfo['loc'];
+    list($latitude, $longitude) = explode(',', $clientLocation);
+   return $longitude;
+    
+
+}
+
 /**
  * @param string $clientLocation
  * @param string $serverLocation
@@ -224,7 +242,7 @@ function getDistance($rawIspInfo)
  */
 function calculateDistance($clientLocation, $serverLocation, $unit)
 {
-    list($clientLatitude, $clientLongitude) = explode(',', $clientLocation);
+   
     list($serverLatitude, $serverLongitude) = explode(',', $serverLocation);
     $dist = distance(
         $clientLatitude,
@@ -284,7 +302,9 @@ function sendResponse(
     $ip,
     $ipInfo = null,
     $distance = null,
-    $rawIspInfo = null
+    $rawIspInfo = null,
+    $longitude = null,
+    $latitude = null,
 ) {
     $processedString = $ip;
     if (is_string($ipInfo)) {
@@ -322,8 +342,13 @@ if (!isset($_GET['isp'])) {
     exit;
 }
 
+
 $rawIspInfo = getIspInfo($ip);
 $isp = getIsp($rawIspInfo);
 $distance = getDistance($rawIspInfo);
+$latitude = getlat();
+$longitude = getlon();
 
-sendResponse($ip, $isp, $distance, $rawIspInfo);
+
+sendResponse($ip, $isp, $distance, $rawIspInfo, $longitude, $latitude);
+
